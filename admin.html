@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Silaanyo Library</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">📚</div>
+                <h2 class="sidebar-title">Silaanyo Library</h2>
+                <p class="sidebar-subtitle">Admin Panel</p>
+                <div style="margin-top: 1rem;">
+                    <button onclick="logout()" class="btn btn-danger btn-sm" style="width: 100%;">🚪 Logout</button>
+                </div>
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-page="dashboard">
+                            <span class="nav-icon">📊</span>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="books">
+                            <span class="nav-icon">📖</span>
+                            Books
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="add-book">
+                            <span class="nav-icon">➕</span>
+                            Add Book
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="borrow">
+                            <span class="nav-icon">🔄</span>
+                            Borrow
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="categories">
+                            <span class="nav-icon">🏷️</span>
+                            Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="authors">
+                            <span class="nav-icon">✍️</span>
+                            Authors
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="members">
+                            <span class="nav-icon">👥</span>
+                            Members
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-info">
+                    <h1 id="page-title">Dashboard</h1>
+                    <p class="header-subtitle">Welcome, Eng-Apthirahman 👋</p>
+                </div>
+                <div class="user-info">
+                    <span class="user-name">Eng-Apthirahman</span>
+                    <div class="user-avatar">A</div>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="page-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">📚</div>
+                        <div class="stat-details">
+                            <h3 id="total-books">0</h3>
+                            <p>Total Books</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">👥</div>
+                        <div class="stat-details">
+                            <h3 id="total-members">0</h3>
+                            <p>Total Members</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">🔄</div>
+                        <div class="stat-details">
+                            <h3 id="borrowed-books">0</h3>
+                            <p>Books Borrowed</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon info">✅</div>
+                        <div class="stat-details">
+                            <h3 id="available-books">0</h3>
+                            <p>Available Books</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">📋 Recent Activity</h2>
+                    </div>
+                    <div id="recent-activity">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📭</div>
+                            <p class="empty-state-text">No recent activity yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Books Section -->
+            <div id="books-section" class="page-section hidden">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">📖 Book Inventory</h2>
+                        <div class="card-actions">
+                            <button class="btn btn-outline btn-sm" onclick="exportToPDF()">
+                                📄 Export PDF
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="navigateTo('add-book')">
+                                ➕ Add New Book
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="book-search" class="search-input"
+                            placeholder="Search by title, author, or ISBN...">
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Book Details</th>
+                                    <th>ISBN</th>
+                                    <th>Category</th>
+                                    <th>Author</th>
+                                    <th>Copies</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="books-table-body">
+                                <tr>
+                                    <td colspan="7">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">📚</div>
+                                            <p class="empty-state-text">No books in library yet. Add your first book!
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add/Edit Book Section -->
+            <div id="add-book-section" class="page-section hidden">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title" id="book-form-title">➕ Add New Book</h2>
+                    </div>
+
+                    <form id="book-form">
+                        <input type="hidden" id="book-id">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Book Title *</label>
+                                <input type="text" id="book-title" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">ISBN</label>
+                                <input type="text" id="book-isbn" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Author *</label>
+                                <select id="book-author" class="form-control" required>
+                                    <option value="">Select Author</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Category *</label>
+                                <select id="book-category" class="form-control" required>
+                                    <option value="">Select Category</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Number of Copies *</label>
+                                <input type="number" id="book-copies" class="form-control" min="1" value="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Publication Year</label>
+                                <input type="number" id="book-year" class="form-control" min="1000" max="2100">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea id="book-description" class="form-control"></textarea>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                            <button type="button" class="btn btn-outline" onclick="navigateTo('books')">
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                💾 Save Book
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Borrow Section -->
+            <div id="borrow-section" class="page-section hidden">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">🔄 Borrow Book</h2>
+                    </div>
+
+                    <form id="borrow-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Member *</label>
+                                <select id="borrow-member" class="form-control" required>
+                                    <option value="">Select Member</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Book *</label>
+                                <select id="borrow-book" class="form-control" required>
+                                    <option value="">Select Book</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Borrow Date *</label>
+                                <input type="date" id="borrow-date" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Return Date *</label>
+                                <input type="date" id="return-date" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            🔄 Borrow Book
+                        </button>
+                    </form>
+                </div>
+
+                <div class="content-card mt-2">
+                    <div class="card-header">
+                        <h2 class="card-title">📋 Active Borrows</h2>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Member</th>
+                                    <th>Book</th>
+                                    <th>Borrow Date</th>
+                                    <th>Return Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="borrows-table-body">
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">📭</div>
+                                            <p class="empty-state-text">No active borrows</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Section -->
+            <div id="categories-section" class="page-section hidden">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">🏷️ Categories</h2>
+                    </div>
+
+                    <form id="category-form" class="mb-2">
+                        <input type="hidden" id="category-id">
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="text" id="category-name" class="form-control" placeholder="Category name"
+                                required>
+                            <button type="submit" class="btn btn-primary" id="category-submit-btn">
+                                ➕ Add Category
+                            </button>
+                        </div>
+                    </form>
+
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Category Name</th>
+                                    <th>Books Count</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categories-table-body">
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">🏷️</div>
+                                            <p class="empty-state-text">No categories yet</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Authors Section -->
+            <div id="authors-section" class="page-section hidden">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">✍️ Authors</h2>
+                    </div>
+
+                    <form id="author-form" class="mb-2">
+                        <input type="hidden" id="author-id">
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="text" id="author-name" class="form-control" placeholder="Author name" required>
+                            <button type="submit" class="btn btn-primary" id="author-submit-btn">
+                                ➕ Add Author
+                            </button>
+                        </div>
+                    </form>
+
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Author Name</th>
+                                    <th>Books Count</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="authors-table-body">
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">✍️</div>
+                                            <p class="empty-state-text">No authors yet</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Members Section -->
+            <div id="members-section" class="page-section hidden">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">👥 Members</h2>
+                        <button class="btn btn-primary btn-sm" onclick="showAddMember()">
+                            ➕ Add Member
+                        </button>
+                    </div>
+
+                    <div id="add-member-form" class="hidden mb-2">
+                        <form id="member-form">
+                            <input type="hidden" id="member-id">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name *</label>
+                                    <input type="text" id="member-name" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email *</label>
+                                    <input type="email" id="member-email" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" id="member-phone" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Membership Date</label>
+                                    <input type="date" id="member-date" class="form-control">
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                                <button type="button" class="btn btn-outline" onclick="hideAddMember()">
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    💾 Save Member
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Member Since</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="members-table-body">
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">👥</div>
+                                            <p class="empty-state-text">No members yet</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Include jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Check admin authentication
+        if (sessionStorage.getItem('isAdmin') !== 'true') {
+            window.location.href = 'login.html';
+        }
+
+        function logout() {
+            if (confirm('Logout from admin panel?')) {
+                sessionStorage.removeItem('isAdmin');
+                sessionStorage.removeItem('adminUser');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silaanyo Library - Public View</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-login-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        .view-only-badge {
+            background: linear-gradient(135deg, #17a2b8, #5bc0de);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="btn btn-primary admin-login-btn" onclick="window.location.href='login.html'">
+        🔐 Admin Login
+    </button>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">📚</div>
+                <h2 class="sidebar-title">Silaanyo Library</h2>
+                <p class="sidebar-subtitle">Public Catalog</p>
+                <div style="margin-top: 1rem;">
+                    <span class="view-only-badge">👁️ View Only</span>
+                </div>
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-page="dashboard">
+                            <span class="nav-icon">📊</span>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="books">
+                            <span class="nav-icon">📖</span>
+                            Books
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="categories">
+                            <span class="nav-icon">🏷️</span>
+                            Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="authors">
+                            <span class="nav-icon">✍️</span>
+                            Authors
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-info">
+                    <h1 id="page-title">Dashboard</h1>
+                    <p class="header-subtitle">Browse our library collection 📚</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="page-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">📚</div>
+                        <div class="stat-details">
+                            <h3 id="total-books">0</h3>
+                            <p>Total Books</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">✅</div>
+                        <div class="stat-details">
+                            <h3 id="available-books">0</h3>
+                            <p>Available Books</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon info">🏷️</div>
+                        <div class="stat-details">
+                            <h3 id="total-categories">0</h3>
+                            <p>Categories</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">✍️</div>
+                        <div class="stat-details">
+                            <h3 id="total-authors">0</h3>
+                            <p>Authors</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">📋 About This Library</h2>
+                    </div>
+                    <div style="padding: 1rem;">
+                        <p style="margin-bottom: 1rem;">Welcome to the Silaanyo Library Management System. Browse our
+                            comprehensive collection of books across various categories including Fiction, Science,
+                            History, Technology, and more.</p>
+                        <p style="color: var(--text-light);">
+                            <strong>Note:</strong> This is a public view. To manage the library, please <a
+                                href="login.html" style="color: var(--primary-green); font-weight: 600;">login as
+                                administrator</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Books Section -->
+            <div id="books-section" class="page-section hidden">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">📖 Book Catalog</h2>
+                        <button class="btn btn-outline btn-sm" onclick="exportToPDF()">
+                            📄 Export PDF
+                        </button>
+                    </div>
+
+                    <div class="search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="book-search" class="search-input"
+                            placeholder="Search by title, author, or ISBN...">
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Book Details</th>
+                                    <th>ISBN</th>
+                                    <th>Category</th>
+                                    <th>Author</th>
+                                    <th>Available</th>
+                                </tr>
+                            </thead>
+                            <tbody id="books-table-body">
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">📚</div>
+                                            <p class="empty-state-text">Loading books...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Section -->
+            <div id="categories-section" class="page-section hidden">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">🏷️ Categories</h2>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Category Name</th>
+                                    <th>Books Count</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categories-table-body">
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">🏷️</div>
+                                            <p class="empty-state-text">Loading categories...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Authors Section -->
+            <div id="authors-section" class="page-section hidden">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">✍️ Authors</h2>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Author Name</th>
+                                    <th>Books Count</th>
+                                </tr>
+                            </thead>
+                            <tbody id="authors-table-body">
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">✍️</div>
+                                            <p class="empty-state-text">Loading authors...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="js/public.js"></script>
+</body>
+
+</html>
